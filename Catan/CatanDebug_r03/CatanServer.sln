@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CatanServer", "CatanServer\CatanServer.vcxproj", "{DE35F176-F8AC-4661-834E-55E6EA2CF9DA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DA45CF68-2722-4A43-9948-D27EC8D3236D} = {DA45CF68-2722-4A43-9948-D27EC8D3236D}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CatanCommon", "CatanCommon\CatanCommon.vcxproj", "{DA45CF68-2722-4A43-9948-D27EC8D3236D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE35F176-F8AC-4661-834E-55E6EA2CF9DA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DE35F176-F8AC-4661-834E-55E6EA2CF9DA}.Debug|Win32.Build.0 = Debug|Win32
+		{DE35F176-F8AC-4661-834E-55E6EA2CF9DA}.Release|Win32.ActiveCfg = Release|Win32
+		{DE35F176-F8AC-4661-834E-55E6EA2CF9DA}.Release|Win32.Build.0 = Release|Win32
+		{DA45CF68-2722-4A43-9948-D27EC8D3236D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DA45CF68-2722-4A43-9948-D27EC8D3236D}.Debug|Win32.Build.0 = Debug|Win32
+		{DA45CF68-2722-4A43-9948-D27EC8D3236D}.Release|Win32.ActiveCfg = Release|Win32
+		{DA45CF68-2722-4A43-9948-D27EC8D3236D}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
