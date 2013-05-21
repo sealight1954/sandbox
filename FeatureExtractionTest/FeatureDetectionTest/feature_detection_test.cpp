@@ -28,6 +28,7 @@ using namespace std;
 #define _DESCRIPTOR_HOG       5
 #define _DESCRIPTOR_GPU_HOG   6
 #define _IMSHOW_DEBUG
+#define _CERR_DEBUG
 static bool isDMatchZeroDistance(const DMatch &m)
 {
 	//return m.distance == 0.0f;
@@ -52,6 +53,42 @@ int64 evalDetectSurf(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 					 string &_dstDrawKeypointsImg_DirFname, string &_dstTimeLog_Path, \
 					 string &_dstKeypointLst_DirFname, \
 					 double _hessianThreshold,int _octave, int _octaveLayers, bool _extended, bool _upright);
+int64 evalDetectStar(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints, \
+					 vector< vector< KeyPoint > > &_vecvecKeypoint,
+					 string &_dstDrawKeypointsImg_DirFname, string &_dstTimeLog_Path, \
+					 string &_dstKeypointLst_DirFname, \
+					 int _maxSize,int _responseThreshold, int _lineThresholdProjected, int _lineThresholdBinarized, int _supressNonMaxSize);
+int64 evalDetectOrb(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints,
+					 vector< vector< KeyPoint > > &_vecvecKeypoint,
+					 string &_dstDrawKeypointsImg_DirFname, string &_dstTimeLog_Path,
+					 string &_dstKeypointLst_DirFname,
+					 int _nfeatures , 
+					 float _scaleFactor , 
+					 int _nlevels , 
+					 int _edgeThreshold31,
+					 int _firstLevel , 
+					 int _WTA_K, 
+					 int _scoreType,
+					 int _patchSize);
+int64 evalDetectFast(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints,
+					 vector< vector< KeyPoint > > &_vecvecKeypoint,
+					 string &_dstDrawKeypointsImg_DirFname, string &_dstTimeLog_Path,
+					 string &_dstKeypointLst_DirFname,
+					 int _threshold,
+					 bool _nonmaxSupression);
+int64 evalDetectMser(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints,
+					 vector< vector< KeyPoint > > &_vecvecKeypoint,
+					 string &_dstDrawKeypointsImg_DirFname, string &_dstTimeLog_Path,
+					 string &_dstKeypointLst_DirFname,
+					 int _delta, 
+					 int _min_area, 
+					 int _max_area,
+					 double _max_variation,
+					 double _min_diversity,
+					 int _max_evolution, 
+					 double _area_threshold,
+					 double _min_margin, 
+					 int _edge_blur_size);
 /*!
 * @brief 特徴点検出→特徴抽出→マッチング、またそれぞれの時間計測
 * @brief SIFT/SURF をコマンド引数
@@ -252,15 +289,130 @@ int main( int argc, char *argv[] ){
 		{
 			/* STAR */
 			cout << "STAR selected" << endl;
-			StarFeatureDetector detector(100);
+			string dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname;
+			//StarFeatureDetectordetector = StarFeatureDetector(
+			genStrDstDir(probeImgPath, dstDir, "STAR", "maxSz", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			const int maxSz_table[] = {25, 35, 45, 55, 65};
+			for( int sz_idx = 0; sz_idx < sizeof(maxSz_table) / sizeof(int); sz_idx++)
+			{
+				vector< KeyPoint> probe_keypoints;
+				evalDetectStar(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+					maxSz_table[sz_idx], 30, 10, 8, 5);
+			}
+
+			genStrDstDir(probeImgPath, dstDir, "STAR", "resTh", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			const int resTh_table[] = {20, 25, 30, 35, 40, 45, 50};
+			for( int rth_idx = 0; rth_idx < sizeof(resTh_table) / sizeof(int); rth_idx++)
+			{
+				vector< KeyPoint> probe_keypoints;
+				evalDetectStar(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+					35, resTh_table[rth_idx], 10, 8, 5);
+			}
+
+			genStrDstDir(probeImgPath, dstDir, "STAR", "lThPrj", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			const int lThPrj_table[] = {2, 4, 6, 8, 10, 12, 14, 16};
+			for( int thprj_idx = 0; thprj_idx < sizeof(lThPrj_table) / sizeof(int); thprj_idx++)
+			{
+				vector< KeyPoint> probe_keypoints;
+				evalDetectStar(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+					35, 30, lThPrj_table[thprj_idx], 8, 5);
+			}
+			genStrDstDir(probeImgPath, dstDir, "STAR", "lThBin", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			const int lThBin_table[] = {5, 6, 8, 10, 12, 14, 16};
+			for( int thbin_idx = 0; thbin_idx < sizeof(lThBin_table) / sizeof(int); thbin_idx++)
+			{
+				vector< KeyPoint> probe_keypoints;
+				evalDetectStar(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+					35, 30, 10, lThBin_table[thbin_idx], 5);
+			}
+			genStrDstDir(probeImgPath, dstDir, "STAR", "sup", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			const int sup_table[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+			for( int sup_idx = 0; sup_idx < sizeof(sup_table) / sizeof(int); sup_idx++)
+			{
+				vector< KeyPoint> probe_keypoints;
+				evalDetectStar(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+					35, 30, 10, 8, sup_table[sup_idx]);
+			}
 			//detector.detect(probe_gray_img,probe_keypoints);
 			break;
 		}
 	case 3:
 		{
 			/* ORB */
-			OrbFeatureDetector detector;
+			//OrbFeatureDetector detector = ;
 			cout << "ORB selected" << endl;
+			int nFeatures = 800;
+			string dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname;
+			//StarFeatureDetectordetector = StarFeatureDetector(
+						//		 int _nfeatures = 500, 
+					 //float _scaleFactor = 1.2f, 
+					 //int _nlevels = 8, 
+					 //int _edgeThreshold = 31,
+					 //int _firstLevel = 0, 
+					 //int _WTA_K=2, 
+					 //int _scoreType=ORB::HARRIS_SCORE, 
+					 //int _patchSize=31
+
+			genStrDstDir(probeImgPath, dstDir, "ORB", "scaleFactor", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			const float scFac_table[] = {0.6f, 0.8f, 1.0f, 1.2f, 1.4f,1.6f};
+			for( int sc_idx = 0; sc_idx < sizeof(scFac_table) / sizeof(int); sc_idx++)
+			{
+				vector< KeyPoint> probe_keypoints;
+				evalDetectOrb(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+					nFeatures, scFac_table[sc_idx], 8, 31, 0, 2, ORB::HARRIS_SCORE, 31 );
+			}
+
+			genStrDstDir(probeImgPath, dstDir, "ORB", "nlevels", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			const int nlev_table[] = {2, 4, 6, 8, 10, 12};
+			for( int nlv_idx = 0; nlv_idx < sizeof(nlev_table) / sizeof(int); nlv_idx++)
+			{
+				vector< KeyPoint> probe_keypoints;
+				evalDetectOrb(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+					nFeatures, 1.2f, nlev_table[nlv_idx], 31, 0, 2, ORB::HARRIS_SCORE, 31 );
+			}
+
+			genStrDstDir(probeImgPath, dstDir, "ORB", "edgeThreshold", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			const int edge_table[] = {27, 29, 31, 33, 35};
+			for( int ed_idx = 0; ed_idx < sizeof(edge_table) / sizeof(int); ed_idx++)
+			{
+				vector< KeyPoint> probe_keypoints;
+				evalDetectOrb(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+					nFeatures, 1.2f,  8, edge_table[ed_idx], 0, 2, ORB::HARRIS_SCORE, 31 );
+			}
+
+			genStrDstDir(probeImgPath, dstDir, "ORB", "firstLevel", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			const int fstLev_table[] = {0,1,2,3};
+			for( int fl_idx = 0; fl_idx < sizeof(fstLev_table) / sizeof(int); fl_idx++)
+			{
+				vector< KeyPoint> probe_keypoints;
+				evalDetectOrb(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+					nFeatures, 1.2f, 8, 31, fstLev_table[fl_idx], 2, ORB::HARRIS_SCORE, 31 );
+			}
+			genStrDstDir(probeImgPath, dstDir, "ORB", "WTAK", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			const int wta_table[] = {1,2,3,4};
+			for( int wta_idx = 0; wta_idx < sizeof(wta_table) / sizeof(int); wta_idx++)
+			{
+				vector< KeyPoint> probe_keypoints;
+				evalDetectOrb(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+					nFeatures, 1.2f, 8, 31, 0, wta_table[wta_idx], ORB::HARRIS_SCORE, 31 );
+			}
+			genStrDstDir(probeImgPath, dstDir, "ORB", "scoreType", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			const int score_table[] = {ORB::FAST_SCORE,ORB::HARRIS_SCORE};
+			for( int sc_idx = 0; sc_idx < sizeof(score_table) / sizeof(int); sc_idx++)
+			{
+				vector< KeyPoint> probe_keypoints;
+				evalDetectOrb(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+					nFeatures, 1.2f, 8, 31, 0, 2,  score_table[sc_idx], 31 );
+			}
+
+			genStrDstDir(probeImgPath, dstDir, "ORB", "patchSize", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			const int patch_table[] = {27,29,31,33,35};
+			for( int pch_idx = 0; pch_idx < sizeof(patch_table) / sizeof(int); pch_idx++)
+			{
+				vector< KeyPoint> probe_keypoints;
+				evalDetectOrb(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+					nFeatures, 1.2f, 8, 31, 0, 2, ORB::HARRIS_SCORE, patch_table[pch_idx] );
+			}
 			//detector.detect(probe_gray_img,probe_keypoints);
 			break;
 		}
@@ -269,7 +421,25 @@ int main( int argc, char *argv[] ){
 		{
 			/* FAST */
 			cout << "FAST selected" << endl;
-			FastFeatureDetector detector;
+			//FastFeatureDetector detector = FastFeatureDetector(;
+			string dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname;
+			genStrDstDir(probeImgPath, dstDir, "FAST", "threshold", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			const int th_table[] = {4,6,8,10,12,14,16};
+			for( int th_idx = 0; th_idx < sizeof(th_table) / sizeof(int); th_idx++)
+			{
+				vector< KeyPoint> probe_keypoints;
+				evalDetectFast(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+					 th_table[th_idx], true );
+			}
+			genStrDstDir(probeImgPath, dstDir, "FAST", "nonmaxSuppression", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			const int bool_table[] = {0, 1};
+			for( int noMax_idx = 0; noMax_idx < sizeof(bool_table) / sizeof(int); noMax_idx++)
+			{
+				vector< KeyPoint> probe_keypoints;
+				evalDetectFast(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+					 10 , bool_table[noMax_idx] );
+			}
+
 			//detector.detect(probe_gray_img,probe_keypoints);
 			break;
 		}
@@ -277,7 +447,111 @@ int main( int argc, char *argv[] ){
 		{
 			/* MSER */
 			cout << "MSER selected" << endl;
-			MserFeatureDetector detector;
+
+			//int _delta=5, 
+			//	int _min_area=60, 
+			//	int _max_area=14400,
+			//	double _max_variation=0.25, 
+			//	double _min_diversity=.2,
+			//	int _max_evolution=200, 
+			//	double _area_threshold=1.01,
+			//	double _min_margin=0.003, 
+			//	int _edge_blur_size=5 )
+			string dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname;
+			{
+				genStrDstDir(probeImgPath, dstDir, "MSER", "delta", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+				const int val_table[] = {2,3,4,5,6,7,8};
+				for( int idx = 0; idx < sizeof(val_table) / sizeof(int); idx++)
+				{
+					vector< KeyPoint> probe_keypoints;
+					evalDetectMser(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+						val_table[idx] , 60 , 14400 , 0.25 , 0.20 , 200 , 1.01 , 0.003 , 5);
+				}
+			}
+			{
+				genStrDstDir(probeImgPath, dstDir, "MSER", "minArea", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+				const int val_table[] = {20,40,60,80,100,120};
+				for( int idx = 0; idx < sizeof(val_table) / sizeof(int); idx++)
+				{
+					vector< KeyPoint> probe_keypoints;
+					evalDetectMser(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+						5, val_table[idx], 14400 , 0.25 , 0.20 , 200 , 1.01 , 0.003 , 5 );
+				}
+			}
+
+			{
+				genStrDstDir(probeImgPath, dstDir, "MSER", "maxArea", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+				const int val_table[] = {12000,13200,14400,15600};
+				for( int idx = 0; idx < sizeof(val_table) / sizeof(int); idx++)
+				{
+					vector< KeyPoint> probe_keypoints;
+					evalDetectMser(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+						5, 60 ,val_table[idx],  0.25 , 0.20 , 200 , 1.01 , 0.003 , 5 );
+				}
+			}
+			{
+				genStrDstDir(probeImgPath, dstDir, "MSER", "maxVar", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+				const double val_table[] = {0.20,0.25,0.30};
+				for( int idx = 0; idx < sizeof(val_table) / sizeof(double); idx++)
+				{
+					vector< KeyPoint> probe_keypoints;
+					evalDetectMser(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+						5, 60 ,14400 , val_table[idx],   0.20 , 200 , 1.01 , 0.003 , 5 );
+				}
+			}
+			{
+				genStrDstDir(probeImgPath, dstDir, "MSER", "maxDiv", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+				const double val_table[] = {0.05,0.10,0.15,0.2,0.25,0.30,0.35,0.40,0.45,0.50};
+				for( int idx = 0; idx < sizeof(val_table) / sizeof(double); idx++)
+				{
+					vector< KeyPoint> probe_keypoints;
+					evalDetectMser(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+						5, 60 ,14400 ,    0.25 ,val_table[idx], 200 , 1.01 , 0.003 , 5 );
+				}
+			}
+
+
+			{
+				genStrDstDir(probeImgPath, dstDir, "MSER", "maxEvol", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+				const int val_table[] = {50,200,350,500};
+				for( int idx = 0; idx < sizeof(val_table) / sizeof(int); idx++)
+				{
+					vector< KeyPoint> probe_keypoints;
+					evalDetectMser(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+						5, 60 , 14400, 0.25 , 0.20 ,val_table[idx] , 1.01 , 0.003 , 5 );
+				}
+			}
+			{
+				genStrDstDir(probeImgPath, dstDir, "MSER", "areaTh", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+				const double val_table[] = {0.01,0.1,1.01,5,10};
+				for( int idx = 0; idx < sizeof(val_table) / sizeof(double); idx++)
+				{
+					vector< KeyPoint> probe_keypoints;
+					evalDetectMser(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+						5, 60 ,14400 , 0.20,   0.25 , 200 ,val_table[idx],  0.003 , 5 );
+				}
+			}
+			{
+				genStrDstDir(probeImgPath, dstDir, "MSER", "minMag", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+				const double val_table[] = {0.0003,0.001,0.003,0.01,0.03,0.1,0.3};
+				for( int idx = 0; idx < sizeof(val_table) / sizeof(double); idx++)
+				{
+					vector< KeyPoint> probe_keypoints;
+					evalDetectMser(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+						5, 60 ,14400 , 0.20,   0.25 , 200 ,1.01, val_table[idx],   5 );
+				}
+			}
+			{
+				genStrDstDir(probeImgPath, dstDir, "MSER", "edgBlSz", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+				const int val_table[] = {2,3,4,5,6,7,8,10 ,15,20,25,30,35,40,45,50};
+				for( int idx = 0; idx < sizeof(val_table) / sizeof(int); idx++)
+				{
+					vector< KeyPoint> probe_keypoints;
+					evalDetectMser(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
+						5, 60 , 14400, 0.25 , 0.20 , 200,1.01 , 0.003 ,val_table[idx]  );
+				}
+			}
+			//MserFeatureDetector detector = MserFeatureDetector(;
 			
 			//detector.detect(probe_gray_img, probe_keypoints);
 			break;
@@ -462,11 +736,14 @@ int64 evalDetectSurf(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
  * @param []
  * @retval []
 */
-int64 evalDetectSurf(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints, \
+int64 evalDetectStar(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints,
 					 vector< vector< KeyPoint > > &_vecvecKeypoint,
-					 string &_dstDrawKeypointsImg_DirFname, string &_dstTimeLog_Path, \
-					 string &_dstKeypointLst_DirFname, \
-					 double _hessianThreshold,int _octave, int _octaveLayers, bool _extended, bool _upright)
+					 string &_dstDrawKeypointsImg_DirFname, string &_dstTimeLog_Path,
+					 string &_dstKeypointLst_DirFname,
+					 int _maxSize,int _responseThreshold, 
+					 int _lineThresholdProjected, 
+					 int _lineThresholdBinarized, 
+					 int _supressNonMaxSize)
 {
 	/* 時間計測用変数 */
 	stringstream ss;
@@ -475,7 +752,7 @@ int64 evalDetectSurf(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 	int64 en_time;
 	int64 diff_time;
 
-	StarFeatureDetector detector = StarFeatureDetector(_hessianThreshold, _octave, _octaveLayers, _extended, _upright);
+	StarFeatureDetector detector = StarFeatureDetector(_maxSize, _responseThreshold, _lineThresholdProjected, _lineThresholdBinarized, _supressNonMaxSize);
 
 	st_time = getTickCount();
 	detector.detect(_probe_gray_img, _vecKeypoints);
@@ -491,9 +768,9 @@ int64 evalDetectSurf(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 		exit(EXIT_FAILURE);
 	}
 	/* --テキスト書き込み */
-	ofs <<"hessTh" << setw(3) << setfill('0') << _hessianThreshold << "_oct" << _octave  \
-		<< "_octLay" << std::setw(3) << std::setfill('0') << _octaveLayers << "_ext" <<  _extended \
-		<< "_upr"	<< _upright;
+	ofs <<"maxSize" << setw(3) << setfill('0') << _maxSize << "_responseThreshold" << _responseThreshold  \
+		<< "_lineThresholdProjected" << std::setw(3) << std::setfill('0') << _lineThresholdProjected << "_lineThresholdBinarized" <<  _lineThresholdBinarized \
+		<< "_supressNonMaxSize"	<< _supressNonMaxSize;
 	ofs <<" " << _vecKeypoints.size() << "points " << diff_time << "msec" << endl;
 	ofs.close();
 
@@ -503,9 +780,9 @@ int64 evalDetectSurf(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 	/* --ファイル名生成 */
 	ss.str("");
 	/* --ファイルパラメータ生成 */ 
-	ss <<"hessTh" << setw(3) << setfill('0') << _hessianThreshold << "_oct" << _octave  \
-		<< "_octLay" << std::setw(3) << std::setfill('0') << _octaveLayers << "_ext" <<  _extended \
-		<< "_upr"	<< _upright;
+	ss <<"maxSz" << setw(3) << setfill('0') << _maxSize << "_resTh" << _responseThreshold  \
+		<< "ThPrj" << std::setw(3) << std::setfill('0') << _lineThresholdProjected << "_thBin" <<  _lineThresholdBinarized \
+		<< "_sprsNMaxSz"	<< _supressNonMaxSize;
 	string strSurfParam = ss.str();
 	ss.str("");
 	ss << _dstDrawKeypointsImg_DirFname << strSurfParam \
@@ -519,6 +796,253 @@ int64 evalDetectSurf(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 	/* キーポイント情報の保存 */
 	ss.str("");
 	ss << _dstKeypointLst_DirFname << strSurfParam << ".yml";
+	FileStorage fs(ss.str(),FileStorage::WRITE);
+	write(fs, "keypoints", _vecKeypoints);
+
+
+	cout << "detect keypoints end: " << diff_time << " msec" << endl;
+	return diff_time;
+}
+
+/*!
+ * @brief ORBの検出関数を実行し、時間を計測する。
+ * @param []
+ * @retval []
+*/
+int64 evalDetectOrb(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints,
+					 vector< vector< KeyPoint > > &_vecvecKeypoint,
+					 string &_dstDrawKeypointsImg_DirFname, string &_dstTimeLog_Path,
+					 string &_dstKeypointLst_DirFname,
+					 int _nfeatures = 500, 
+					 float _scaleFactor = 1.2f, 
+					 int _nlevels = 8, 
+					 int _edgeThreshold = 31,
+					 int _firstLevel = 0, 
+					 int _WTA_K=2, 
+					 int _scoreType=ORB::HARRIS_SCORE, 
+					 int _patchSize=31
+		/*int _maxSize,int _responseThreshold, 
+					 int _lineThresholdProjected, 
+					 int _lineThresholdBinarized, 
+					 int _supressNonMaxSize)*/)
+{
+	/* 時間計測用変数 */
+	stringstream ss;
+	const double f = (1000 / getTickFrequency());
+	int64 st_time;
+	int64 en_time;
+	int64 diff_time;
+	OrbFeatureDetector detector = OrbFeatureDetector(_nfeatures, _scaleFactor, _nlevels, _edgeThreshold, 
+		_firstLevel, _WTA_K, _scoreType, _patchSize);
+	//OrbFeatureDetector(
+	st_time = getTickCount();
+	detector.detect(_probe_gray_img, _vecKeypoints);
+	en_time = getTickCount();
+	diff_time = (int)(en_time - st_time) * f;
+	_vecvecKeypoint.push_back(_vecKeypoints);
+	
+	/* 計測時間の記録 */
+	ofstream ofs(_dstTimeLog_Path.c_str(), std::ios::out | std::ios::app);
+	if(ofs.fail())
+	{
+		cerr << "file open failed :" << _dstTimeLog_Path << endl;
+		exit(EXIT_FAILURE);
+	}
+	/* --テキスト書き込み */
+	ofs <<"nfeat" << setw(3) << setfill('0') << _nfeatures << "_scaleFactor" << _scaleFactor \
+		<< "_nlevels" << std::setw(3) << std::setfill('0') << _nlevels << "_edgeThreshold" <<  _edgeThreshold \
+		<< "_firstLevel" << _firstLevel << "_WTA_K" << _WTA_K << "_scoreType" << _scoreType << "_patchSize" << _patchSize;
+	ofs <<" " << _vecKeypoints.size() << "points " << diff_time << "msec" << endl;
+	ofs.close();
+					 //int _nfeatures = 500, 
+					 //float _scaleFactor = 1.2f, 
+					 //int _nlevels = 8, 
+					 //int _edgeThreshold = 31,
+					 //int _firstLevel = 0, 
+					 //int _WTA_K=2, 
+					 //int _scoreType=ORB::HARRIS_SCORE, 
+					 //int _patchSize=31
+
+	/* 結果の描画・保存 */
+	Mat dstDrawKeypointsImg; 
+	drawKeypoints(_probe_gray_img, _vecKeypoints, dstDrawKeypointsImg, Scalar(0, 0, 255));
+	/* --ファイル名生成 */
+	ss.str("");
+	/* --ファイルパラメータ生成 */ 
+	ss <<"nfeat" << setw(3) << setfill('0') << _nfeatures << "_scl" << _scaleFactor \
+		<< "_nlev" << std::setw(3) << std::setfill('0') << _nlevels << "_edgTh" <<  _edgeThreshold \
+		<< "_1stLev" << _firstLevel << "_WTA_K" << _WTA_K << "_scTyp" << _scoreType << "_patchSz" << _patchSize;
+	string strSurfParam = ss.str();
+	ss.str("");
+	ss << _dstDrawKeypointsImg_DirFname << strSurfParam \
+		<< ".png";
+	if(imwrite(ss.str(), dstDrawKeypointsImg) == false)
+	{
+		cerr << "imwrite failure:" <<  _dstDrawKeypointsImg_DirFname << endl;
+		exit(EXIT_FAILURE);
+	}
+	
+	/* キーポイント情報の保存 */
+	ss.str("");
+	ss << _dstKeypointLst_DirFname << strSurfParam << ".yml";
+	FileStorage fs(ss.str(),FileStorage::WRITE);
+	write(fs, "keypoints", _vecKeypoints);
+
+
+	cout << "detect keypoints end: " << diff_time << " msec" << endl;
+	return diff_time;
+}
+
+
+/*!
+ * @brief STARの検出関数を実行し、時間を計測する。
+ * @param []
+ * @retval []
+*/
+int64 evalDetectFast(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints,
+					 vector< vector< KeyPoint > > &_vecvecKeypoint,
+					 string &_dstDrawKeypointsImg_DirFname, string &_dstTimeLog_Path,
+					 string &_dstKeypointLst_DirFname,
+					 int _threshold,
+					 bool _nonmaxSupression)
+{
+	/* 時間計測用変数 */
+	stringstream ss;
+	const double f = (1000 / getTickFrequency());
+	int64 st_time;
+	int64 en_time;
+	int64 diff_time;
+
+	FastFeatureDetector detector = FastFeatureDetector(_threshold , _nonmaxSupression);
+
+	st_time = getTickCount();
+	detector.detect(_probe_gray_img, _vecKeypoints);
+	en_time = getTickCount();
+	diff_time = (int)(en_time - st_time) * f;
+	_vecvecKeypoint.push_back(_vecKeypoints);
+	
+	/* 計測時間の記録 */
+	ofstream ofs(_dstTimeLog_Path.c_str(), std::ios::out | std::ios::app);
+	if(ofs.fail())
+	{
+		cerr << "file open failed :" << _dstTimeLog_Path << endl;
+		exit(EXIT_FAILURE);
+	}
+	
+	/* --テキスト書き込み */
+	ofs <<"threshold" << setw(3) << setfill('0') << _threshold<< "_nonmaxSupression" << _nonmaxSupression ;
+	ofs <<" " << _vecKeypoints.size() << "points " << diff_time << "msec" << endl;
+	ofs.close();
+
+	/* 結果の描画・保存 */
+	Mat dstDrawKeypointsImg; 
+	drawKeypoints(_probe_gray_img, _vecKeypoints, dstDrawKeypointsImg, Scalar(0, 0, 255));
+	/* --ファイル名生成 */
+	ss.str("");
+	/* --ファイルパラメータ生成 */ 
+	ss <<"threshold" << setw(3) << setfill('0') << _threshold<< "_nonmaxSupression" << _nonmaxSupression ;
+	string strSurfParam = ss.str();
+	ss.str("");
+	ss << _dstDrawKeypointsImg_DirFname << strSurfParam \
+		<< ".png";
+	if(imwrite(ss.str(), dstDrawKeypointsImg) == false)
+	{
+		cerr << "imwrite failure:" <<  _dstDrawKeypointsImg_DirFname << endl;
+		exit(EXIT_FAILURE);
+	}
+	
+	/* キーポイント情報の保存 */
+	ss.str("");
+	ss << _dstKeypointLst_DirFname << strSurfParam << ".yml";
+	FileStorage fs(ss.str(),FileStorage::WRITE);
+	write(fs, "keypoints", _vecKeypoints);
+
+
+	cout << "detect keypoints end: " << diff_time << " msec" << endl;
+	return diff_time;
+}
+
+
+/*!
+ * @brief MSERの検出関数を実行し、時間を計測する。
+ * @param []
+ * @retval []
+*/
+int64 evalDetectMser(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints,
+					 vector< vector< KeyPoint > > &_vecvecKeypoint,
+					 string &_dstDrawKeypointsImg_DirFname, string &_dstTimeLog_Path,
+					 string &_dstKeypointLst_DirFname,
+					 int _delta=5, 
+					 int _min_area=60, 
+					 int _max_area=14400,
+					 double _max_variation=0.25, 
+					 double _min_diversity=.2,
+					 int _max_evolution=200, 
+					 double _area_threshold=1.01,
+					 double _min_margin=0.003, 
+					 int _edge_blur_size=5 )
+{
+	/* 時間計測用変数 */
+	stringstream ss;
+	const double f = (1000 / getTickFrequency());
+	int64 st_time;
+	int64 en_time;
+	int64 diff_time;
+
+	MserFeatureDetector detector = MserFeatureDetector(_delta, _min_area, _max_area, 
+		_max_variation, _min_diversity, _max_evolution, _area_threshold, _min_margin, _edge_blur_size);
+
+	st_time = getTickCount();
+	detector.detect(_probe_gray_img, _vecKeypoints);
+	en_time = getTickCount();
+	diff_time = (int)(en_time - st_time) * f;
+	_vecvecKeypoint.push_back(_vecKeypoints);
+	
+	/* 計測時間の記録 */
+	ofstream ofs(_dstTimeLog_Path.c_str(), std::ios::out | std::ios::app);
+	if(ofs.fail())
+	{
+		cerr << "file open failed :" << _dstTimeLog_Path << endl;
+		exit(EXIT_FAILURE);
+	}
+	
+	/* --テキスト書き込み */
+	ofs <<"_delta" << setw(3) << setfill('0') << _delta<< "_minArea" << _min_area \
+		<<"_maxArea" << setw(3) << setfill('0') << _max_area<< "_maxVariation" << _max_variation \
+		<<"_minDiversity" << setw(3) << setfill('0') << _min_diversity<< "_maxEvolution" << _max_evolution \
+	<<"_areaThreshold" << setw(3) << setfill('0') << _area_threshold << "_minMargin" << _min_margin \
+	<< "_edgeBlurSize" << _edge_blur_size;
+	ofs <<" " << _vecKeypoints.size() << "points " << diff_time << "msec" << endl;
+	ofs.close();
+
+	/* 結果の描画・保存 */
+	Mat dstDrawKeypointsImg; 
+	drawKeypoints(_probe_gray_img, _vecKeypoints, dstDrawKeypointsImg, Scalar(0, 0, 255));
+	/* --ファイル名生成 */
+	ss.str("");
+	/* --ファイルパラメータ生成 */ 
+	ss <<"_delta" << setw(3) << setfill('0') << _delta<< "_minAr" << _min_area \
+		<<"_maxArea" << setw(3) << setfill('0') << _max_area<< "_maxVar" << _max_variation \
+		<<"_minDiv" << setw(3) << setfill('0') << _min_diversity<< "_maxEvol" << _max_evolution \
+	<<"_areaTh" << setw(3) << setfill('0') << _area_threshold << "_minMar" << _min_margin \
+	<< "_edgBlur" << _edge_blur_size;
+	string strSurfParam = ss.str();
+	ss.str("");
+	ss << _dstDrawKeypointsImg_DirFname << strSurfParam \
+		<< ".png";
+
+	if(imwrite(ss.str(), dstDrawKeypointsImg) == false)
+	{
+		cerr << "imwrite failure:" <<  _dstDrawKeypointsImg_DirFname << endl;
+		exit(EXIT_FAILURE);
+	}
+	
+	/* キーポイント情報の保存 */
+	ss.str("");
+	ss << _dstKeypointLst_DirFname << strSurfParam << ".yml";
+#ifdef _CERR_DEBUG
+	cerr << ss.str() << endl;
+#endif
 	FileStorage fs(ss.str(),FileStorage::WRITE);
 	write(fs, "keypoints", _vecKeypoints);
 
