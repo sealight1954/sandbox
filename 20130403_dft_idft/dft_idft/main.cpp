@@ -38,14 +38,15 @@ DftIdftApp::DftIdftApp(const string filename)
   Size s_size = src_img.size();
   src_cols = s_size.width;
   src_rows = s_size.height;
+  /* 入力にあわせて行列確保 */
   Re_img = Mat(s_size, CV_64F);
   Im_img = Mat::zeros(s_size, CV_64F);
-  Complex_img = Mat(s_size, CV_64FC2);
+  Complex_img = Mat(s_size, CV_64FC2);// 複合してるやつは2ch
    
   src_img.convertTo(Re_img, CV_64F);
-  mv.push_back(Re_img);
-  mv.push_back(Im_img);
-  merge(mv, Complex_img);
+  mv.push_back(Re_img);  //入力
+  mv.push_back(Im_img);  //zero
+  merge(mv, Complex_img);//merge
   idft_img = zero = Mat::zeros(s_size, CV_64F);
  
   namedWindow(org_win, CV_WINDOW_AUTOSIZE);
@@ -136,6 +137,7 @@ DftIdftApp::onMouse(int event, int x, int y, int flags, void* param)
     } else {  // LeftButton
       mx += x<cx ? cx:-cx;
       my += y<cy ? cy:-cy;
+	  // zeroだったところに値を代入->IDFTの際にdft_dstの周波数の係数が考慮されて復元される
       double *from = dft_dst.ptr<double>(my);
       double *to = dft_dst_p.ptr<double>(my);
       double *mag = mag_img.ptr<double>(y);
