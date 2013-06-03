@@ -75,7 +75,7 @@ int64 evalDetectFast(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 					 string &_dstDrawKeypointsImg_DirFname, string &_dstTimeLog_Path,
 					 string &_dstKeypointLst_DirFname,
 					 int _threshold,
-					 bool _nonmaxSupression);
+					 bool _nonmaxSuppression);
 int64 evalDetectMser(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints,
 					 vector< vector< KeyPoint > > &_vecvecKeypoint,
 					 string &_dstDrawKeypointsImg_DirFname, string &_dstTimeLog_Path,
@@ -160,16 +160,16 @@ int main( int argc, char *argv[] ){
 			string dstGrandChildDir = ss.str();
 			/* キーポイントの描画結果（拡張子なし） */
 			ss.str("");
-			ss << dstGrandChildDir << "\\" << fname << "_sift_octave" ;
+			ss << dstGrandChildDir << "\\" << fname << "_SIFT_octave" ;
 			string dstDrawKeypointsImg_DirFname = ss.str();
 			/* 処理時間計測結果 */
 			ss.str("");
-			ss << dstGrandChildDir << "\\TimeLog_" << fname << "_sift_octave" << ".txt" ;
+			ss << dstGrandChildDir << "\\TimeLog_" << fname << "_SIFT_octave" << ".txt" ;
 			string dstTimeLog_Path = ss.str();
 			remove(dstTimeLog_Path.c_str());
 			/* キーポイント上方の格納先 */
 			ss.str("");
-			ss << dstGrandChildDir << "\\keypoints_" << fname << "_sift_octave";
+			ss << dstGrandChildDir << "\\keypoints_" << fname << "_SIFT_octave";
 			string dstKeypointLst_DirFname = ss.str();
 			const int oct_table[] = {2,3,4,5};
 			for(int o_idx = 0; o_idx < sizeof(oct_table) / sizeof(int) ; o_idx++)
@@ -187,16 +187,16 @@ int main( int argc, char *argv[] ){
 			dstGrandChildDir = ss.str();
 			/* キーポイントの描画結果（拡張子なし） */
 			ss.str("");
-			ss << dstGrandChildDir << "\\" << fname << "_sift_edgeThreshold" ;
+			ss << dstGrandChildDir << "\\" << fname << "_SIFT_edgeThreshold" ;
 			dstDrawKeypointsImg_DirFname = ss.str();
 			/* 処理時間計測結果 */
 			ss.str("");
-			ss << dstGrandChildDir << "\\TimeLog_" << fname << "_sift_edgeThreshold" << ".txt" ;
+			ss << dstGrandChildDir << "\\TimeLog_" << fname << "_SIFT_edgeThreshold" << ".txt" ;
 			dstTimeLog_Path = ss.str();
 			remove(dstTimeLog_Path.c_str());
 			/* キーポイント上方の格納先 */
 			ss.str("");
-			ss << dstGrandChildDir << "\\keypoints_" << fname << "_sift_edgeThreshold";
+			ss << dstGrandChildDir << "\\keypoints_" << fname << "_SIFT_edgeThreshold";
 			dstKeypointLst_DirFname = ss.str();
 			const double eTh_table[] = {1,1.2,1.4,1.6,1.8,2,3,4,5,6,7,8,9,10,25,50};
 			for(int e_idx = 0; e_idx < sizeof(eTh_table) / sizeof(double); e_idx++)
@@ -211,12 +211,12 @@ int main( int argc, char *argv[] ){
 			dstGrandChildDir = dstChildDir + "\\contrastThreshold";
 			checkMkdir(dstGrandChildDir);
 			/* キーポイントの描画結果（拡張子なし） */
-			dstDrawKeypointsImg_DirFname = dstGrandChildDir + "\\" + fname + "_sift_contrastThreshold" ;
+			dstDrawKeypointsImg_DirFname = dstGrandChildDir + "\\" + fname + "_SIFT_contrastThreshold" ;
 			/* 処理時間計測結果 */
-			dstTimeLog_Path              = dstGrandChildDir + "\\TimeLog_" + fname + "_sift_contrastThreshold" + ".txt" ;
+			dstTimeLog_Path              = dstGrandChildDir + "\\TimeLog_" + fname + "_SIFT_contrastThreshold" + ".txt" ;
 			remove(dstTimeLog_Path.c_str());
 			/* キーポイント上方の格納先 */
-			dstKeypointLst_DirFname      = dstGrandChildDir + "\\keypoints_" + fname + "_sift_contrastThreshold";
+			dstKeypointLst_DirFname      = dstGrandChildDir + "\\keypoints_" + fname + "_SIFT_contrastThreshold";
 			const double cTh_table[] = {0.02, 0.04, 0.06, 0.08 , 0.10, 0.12, 0.14, 0.16, 0.18, 0.20, 0.22, 0.24};
 			for(int c_idx = 0; c_idx < sizeof(cTh_table) / sizeof(double); c_idx++)
 			{
@@ -230,12 +230,12 @@ int main( int argc, char *argv[] ){
 			dstGrandChildDir = dstChildDir + "\\sigma";
 			checkMkdir(dstGrandChildDir);
 			/* キーポイントの描画結果（拡張子なし） */
-			dstDrawKeypointsImg_DirFname = dstGrandChildDir + "\\" + fname + "_sift_sigma" ;
+			dstDrawKeypointsImg_DirFname = dstGrandChildDir + "\\" + fname + "_SIFT_sigma" ;
 			/* 処理時間計測結果 */
-			dstTimeLog_Path              = dstGrandChildDir + "\\TimeLog_" + fname + "_sift_sigma" + ".txt" ;
+			dstTimeLog_Path              = dstGrandChildDir + "\\TimeLog_" + fname + "_SIFT_sigma" + ".txt" ;
 			remove(dstTimeLog_Path.c_str());
 			/* キーポイント上方の格納先 */
-			dstKeypointLst_DirFname      = dstGrandChildDir + "\\keypoints_" + fname + "_sift_sigma";
+			dstKeypointLst_DirFname      = dstGrandChildDir + "\\keypoints_" + fname + "_SIFT_sigma";
 			const double sgm_table[] = {0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.4, 2.6, 2.8};
 			//const double sgm_table[] = {0.01,0.04,0.06,0.08,0.10};
 			for(int s_idx = 0; s_idx < sizeof(sgm_table) / sizeof(double); s_idx++)
@@ -253,7 +253,7 @@ int main( int argc, char *argv[] ){
 			/* SURF */
 			cout << "SURF selected" << endl;
 			string dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname;
-			genStrDstDir(probeImgPath, dstDir, "SURF", "hessTh", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			genStrDstDir(probeImgPath, dstDir, "SURF", "hessianThreshold", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
 			const double hess_table[] = {200,300,400,500,600};
 			for( int h_idx = 0; h_idx < sizeof(hess_table) / sizeof(double) ; h_idx++)
 			{
@@ -291,7 +291,7 @@ int main( int argc, char *argv[] ){
 			cout << "STAR selected" << endl;
 			string dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname;
 			//StarFeatureDetectordetector = StarFeatureDetector(
-			genStrDstDir(probeImgPath, dstDir, "STAR", "maxSz", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			genStrDstDir(probeImgPath, dstDir, "STAR", "maxSize", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
 			const int maxSz_table[] = {25, 35, 45, 55, 65};
 			for( int sz_idx = 0; sz_idx < sizeof(maxSz_table) / sizeof(int); sz_idx++)
 			{
@@ -300,7 +300,7 @@ int main( int argc, char *argv[] ){
 					maxSz_table[sz_idx], 30, 10, 8, 5);
 			}
 
-			genStrDstDir(probeImgPath, dstDir, "STAR", "resTh", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			genStrDstDir(probeImgPath, dstDir, "STAR", "responseThreshold", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
 			const int resTh_table[] = {20, 25, 30, 35, 40, 45, 50};
 			for( int rth_idx = 0; rth_idx < sizeof(resTh_table) / sizeof(int); rth_idx++)
 			{
@@ -309,7 +309,7 @@ int main( int argc, char *argv[] ){
 					35, resTh_table[rth_idx], 10, 8, 5);
 			}
 
-			genStrDstDir(probeImgPath, dstDir, "STAR", "lThPrj", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			genStrDstDir(probeImgPath, dstDir, "STAR", "lineThresholdProjected", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
 			const int lThPrj_table[] = {2, 4, 6, 8, 10, 12, 14, 16};
 			for( int thprj_idx = 0; thprj_idx < sizeof(lThPrj_table) / sizeof(int); thprj_idx++)
 			{
@@ -317,7 +317,7 @@ int main( int argc, char *argv[] ){
 				evalDetectStar(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
 					35, 30, lThPrj_table[thprj_idx], 8, 5);
 			}
-			genStrDstDir(probeImgPath, dstDir, "STAR", "lThBin", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			genStrDstDir(probeImgPath, dstDir, "STAR", "lineThresholdBinarized", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
 			const int lThBin_table[] = {5, 6, 8, 10, 12, 14, 16};
 			for( int thbin_idx = 0; thbin_idx < sizeof(lThBin_table) / sizeof(int); thbin_idx++)
 			{
@@ -325,7 +325,7 @@ int main( int argc, char *argv[] ){
 				evalDetectStar(probe_gray_img, probe_keypoints, vecvecKeypoint, dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname, \
 					35, 30, 10, lThBin_table[thbin_idx], 5);
 			}
-			genStrDstDir(probeImgPath, dstDir, "STAR", "sup", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+			genStrDstDir(probeImgPath, dstDir, "STAR", "supressNonMaxSize", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
 			const int sup_table[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 			for( int sup_idx = 0; sup_idx < sizeof(sup_table) / sizeof(int); sup_idx++)
 			{
@@ -424,7 +424,7 @@ int main( int argc, char *argv[] ){
 			//FastFeatureDetector detector = FastFeatureDetector(;
 			string dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname;
 			genStrDstDir(probeImgPath, dstDir, "FAST", "threshold", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
-			const int th_table[] = {4,6,8,10,12,14,16};
+			const int th_table[] = {4,6,8,10,12,14,16,18,20,22,24,26,28,30};
 			for( int th_idx = 0; th_idx < sizeof(th_table) / sizeof(int); th_idx++)
 			{
 				vector< KeyPoint> probe_keypoints;
@@ -490,7 +490,7 @@ int main( int argc, char *argv[] ){
 				}
 			}
 			{
-				genStrDstDir(probeImgPath, dstDir, "MSER", "maxVar", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+				genStrDstDir(probeImgPath, dstDir, "MSER", "maxVariation", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
 				const double val_table[] = {0.20,0.25,0.30};
 				for( int idx = 0; idx < sizeof(val_table) / sizeof(double); idx++)
 				{
@@ -500,7 +500,7 @@ int main( int argc, char *argv[] ){
 				}
 			}
 			{
-				genStrDstDir(probeImgPath, dstDir, "MSER", "maxDiv", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+				genStrDstDir(probeImgPath, dstDir, "MSER", "minDiversity", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
 				const double val_table[] = {0.05,0.10,0.15,0.2,0.25,0.30,0.35,0.40,0.45,0.50};
 				for( int idx = 0; idx < sizeof(val_table) / sizeof(double); idx++)
 				{
@@ -512,7 +512,7 @@ int main( int argc, char *argv[] ){
 
 
 			{
-				genStrDstDir(probeImgPath, dstDir, "MSER", "maxEvol", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+				genStrDstDir(probeImgPath, dstDir, "MSER", "maxEvolution", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
 				const int val_table[] = {50,200,350,500};
 				for( int idx = 0; idx < sizeof(val_table) / sizeof(int); idx++)
 				{
@@ -522,8 +522,8 @@ int main( int argc, char *argv[] ){
 				}
 			}
 			{
-				genStrDstDir(probeImgPath, dstDir, "MSER", "areaTh", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
-				const double val_table[] = {0.01,0.1,1.01,5,10};
+				genStrDstDir(probeImgPath, dstDir, "MSER", "areaThreshold", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+				const double val_table[] = {0.01,0.10,1.01,5.00,10.00};
 				for( int idx = 0; idx < sizeof(val_table) / sizeof(double); idx++)
 				{
 					vector< KeyPoint> probe_keypoints;
@@ -532,8 +532,8 @@ int main( int argc, char *argv[] ){
 				}
 			}
 			{
-				genStrDstDir(probeImgPath, dstDir, "MSER", "minMag", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
-				const double val_table[] = {0.0003,0.001,0.003,0.01,0.03,0.1,0.3};
+				genStrDstDir(probeImgPath, dstDir, "MSER", "minMargin", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+				const double val_table[] = {0.0003,0.001,0.003,0.01,0.03,0.10,0.30};
 				for( int idx = 0; idx < sizeof(val_table) / sizeof(double); idx++)
 				{
 					vector< KeyPoint> probe_keypoints;
@@ -542,7 +542,7 @@ int main( int argc, char *argv[] ){
 				}
 			}
 			{
-				genStrDstDir(probeImgPath, dstDir, "MSER", "edgBlSz", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
+				genStrDstDir(probeImgPath, dstDir, "MSER", "edgeBlurSize", dstDrawKeypointsImg_DirFname, dstTimeLog_Path, dstKeypointLst_DirFname);
 				const int val_table[] = {2,3,4,5,6,7,8,10 ,15,20,25,30,35,40,45,50};
 				for( int idx = 0; idx < sizeof(val_table) / sizeof(int); idx++)
 				{
@@ -596,9 +596,10 @@ int64 evalDetectSift(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 		exit(EXIT_FAILURE);
 	}
 	/* --テキスト書き込み */
-	ofs <<"nfeat" << _nfeatures << "_oct" << _octave  \
-		<< "_contTh" << std::setw(3) << std::setfill('0') << _contrastTh * 100 << "_edgeTh" << setw(3) << setfill('0') << _edgeTh * 10 \
-		<< "_sigma" << setw(3) << setfill('0') << _sigma * 10;
+	ofs <<"nfeatures-" << _nfeatures << "_octave-" << _octave  \
+		<< "_contrastThreshold-" << setw(3) << setfill('0') << setprecision(2) << fixed << _contrastTh  \
+		<< "_edgeThreshold-"     << setw(4) << setfill('0') << setprecision(1) << fixed << _edgeTh \
+		<< "_sigma-"             << setw(3) << setfill('0') << setprecision(1) << fixed << _sigma;
 	ofs <<" " << _vecKeypoints.size() << "points " << diff_time << "msec" << endl;
 	ofs.close();
 
@@ -609,8 +610,9 @@ int64 evalDetectSift(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 	ss.str("");
 	/* --ファイルパラメータ生成 */ 
 	ss << "_nft" << _nfeatures << "_oct" << _octave  \
-		<< "_cTh" << setw(3) << setfill('0') << _contrastTh * 100 << "_eTh" << setw(3) << setfill('0') << _edgeTh * 10 \
-		<< "_sgm" << setw(3) << setfill('0') << _sigma * 10 ;
+		<< "_cTh" << setw(3) << setfill('0') << setprecision(2) << fixed <<_contrastTh \
+		<< "_eTh" << setw(4) << setfill('0') << setprecision(1) << fixed << _edgeTh \
+		<< "_sgm" << setw(3) << setfill('0') << setprecision(1) << fixed << _sigma ;
 	string strSiftParam = ss.str();
 	ss.str("");
 	ss << _dstDrawKeypointsImg_DirFname << strSiftParam \
@@ -633,38 +635,38 @@ int64 evalDetectSift(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 }
 
 /*!
- * @brief  _magazines_sift_contrastThresholdのフォーマットで保存先ディレクトリの文字列を生成
- * @param [_probeImgPath] srcDir/imgName.jpgまでの文字列
- * @param [_dstDir] 保存先RootDir
- * @retval []
+* @brief  _magazines_sift_contrastThresholdのフォーマットで保存先ディレクトリの文字列を生成
+* @param [_probeImgPath] srcDir/imgName.jpgまでの文字列
+* @param [_dstDir] 保存先RootDir
+* @retval []
 */
 void genStrDstDir(const string &_probeImgPath,const string &_dstDir, const string &_strFeature, const string &_strParam, \
 				  string &_dstDrawKeypointsImg_DirFname, string &_dstTimeLog_Path, string &_dstKeypointLst_DirFname)
 {
-			string dir, imgName, ext;
-			stringstream ss;
-			StdSplitpath(_probeImgPath, dir, imgName, ext);
-			ss << _dstDir << "\\" << imgName ;
-			checkMkdir(ss.str());
-			ss << "\\" << _strFeature ;
-			checkMkdir(ss.str());
-			string dstChildDir = ss.str();
-	  				/* param */
-			string dstGrandChildDir = dstChildDir + "\\" + _strParam;
-			checkMkdir(dstGrandChildDir);
-			/* キーポイントの描画結果（拡張子なし） */
-			//_magazines_sift_contrastThreshold
-			_dstDrawKeypointsImg_DirFname = dstGrandChildDir + "\\" + imgName + "_" + _strFeature + "_" + _strParam  ;
-			/* 処理時間計測結果 */
-			_dstTimeLog_Path              = dstGrandChildDir + "\\TimeLog_" + imgName + "_" + _strFeature + "_" + _strParam + ".txt" ;
-			remove(_dstTimeLog_Path.c_str());
-			/* キーポイント上方の格納先 */
-			_dstKeypointLst_DirFname      = dstGrandChildDir + "\\keypoints_" + imgName + "_" + _strFeature + "_" + _strParam ;
+	string dir, imgName, ext;
+	stringstream ss;
+	StdSplitpath(_probeImgPath, dir, imgName, ext);
+	ss << _dstDir << "\\" << imgName ;
+	checkMkdir(ss.str());
+	ss << "\\" << _strFeature ;
+	checkMkdir(ss.str());
+	string dstChildDir = ss.str();
+	/* param */
+	string dstGrandChildDir = dstChildDir + "\\" + _strParam;
+	checkMkdir(dstGrandChildDir);
+	/* キーポイントの描画結果（拡張子なし） */
+	//_magazines_sift_contrastThreshold
+	_dstDrawKeypointsImg_DirFname = dstGrandChildDir + "\\" + imgName + "_" + _strFeature + "_" + _strParam  ;
+	/* 処理時間計測結果 */
+	_dstTimeLog_Path              = dstGrandChildDir + "\\TimeLog_" + imgName + "_" + _strFeature + "_" + _strParam + ".txt" ;
+	remove(_dstTimeLog_Path.c_str());
+	/* キーポイント上方の格納先 */
+	_dstKeypointLst_DirFname      = dstGrandChildDir + "\\keypoints_" + imgName + "_" + _strFeature + "_" + _strParam ;
 }
 /*!
- * @brief Surfの検出関数を実行し、時間を計測する。
- * @param []
- * @retval []
+* @brief Surfの検出関数を実行し、時間を計測する。
+* @param []
+* @retval []
 */
 int64 evalDetectSurf(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints, \
 					 vector< vector< KeyPoint > > &_vecvecKeypoint,
@@ -695,9 +697,11 @@ int64 evalDetectSurf(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 		exit(EXIT_FAILURE);
 	}
 	/* --テキスト書き込み */
-	ofs <<"hessTh" << setw(3) << setfill('0') << _hessianThreshold << "_oct" << _octave  \
-		<< "_octLay" << std::setw(3) << std::setfill('0') << _octaveLayers << "_ext" <<  _extended \
-		<< "_upr"	<< _upright;
+	ofs <<"hessianThreshold-" << setw(3) << setfill('0') << _hessianThreshold \
+		<< "_octave-"                             << _octave  \
+		<< "_octaveLayers-"                          << _octaveLayers \
+		<< "_extended-"                           <<  _extended \
+		<< "_upright-"	                          << _upright;
 	ofs <<" " << _vecKeypoints.size() << "points " << diff_time << "msec" << endl;
 	ofs.close();
 
@@ -707,9 +711,11 @@ int64 evalDetectSurf(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 	/* --ファイル名生成 */
 	ss.str("");
 	/* --ファイルパラメータ生成 */ 
-	ss <<"hessTh" << setw(3) << setfill('0') << _hessianThreshold << "_oct" << _octave  \
-		<< "_octLay" << std::setw(3) << std::setfill('0') << _octaveLayers << "_ext" <<  _extended \
-		<< "_upr"	<< _upright;
+	ss <<"_hTh" << setw(3) << setfill('0') << _hessianThreshold \
+		<< "_oct" <<                         _octave  \
+		<< "_ocL" <<                         _octaveLayers \
+		<< "_ext" <<                         _extended \
+		<< "_upr" <<                         _upright;
 	string strSurfParam = ss.str();
 	ss.str("");
 	ss << _dstDrawKeypointsImg_DirFname << strSurfParam \
@@ -768,9 +774,11 @@ int64 evalDetectStar(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 		exit(EXIT_FAILURE);
 	}
 	/* --テキスト書き込み */
-	ofs <<"maxSize" << setw(3) << setfill('0') << _maxSize << "_responseThreshold" << _responseThreshold  \
-		<< "_lineThresholdProjected" << std::setw(3) << std::setfill('0') << _lineThresholdProjected << "_lineThresholdBinarized" <<  _lineThresholdBinarized \
-		<< "_supressNonMaxSize"	<< _supressNonMaxSize;
+	ofs <<"maxSize-" << setw(2) << setfill('0')                             << _maxSize \
+		<< "_responseThreshold-"      << std::setw(2) << std::setfill('0')  << _responseThreshold  \
+		<< "_lineThresholdProjected-" << std::setw(2) << std::setfill('0')  << _lineThresholdProjected \
+		<< "_lineThresholdBinarized-" << std::setw(2) << std::setfill('0')  <<  _lineThresholdBinarized \
+		<< "_supressNonMaxSize-"	                                        << _supressNonMaxSize;
 	ofs <<" " << _vecKeypoints.size() << "points " << diff_time << "msec" << endl;
 	ofs.close();
 
@@ -780,9 +788,11 @@ int64 evalDetectStar(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 	/* --ファイル名生成 */
 	ss.str("");
 	/* --ファイルパラメータ生成 */ 
-	ss <<"maxSz" << setw(3) << setfill('0') << _maxSize << "_resTh" << _responseThreshold  \
-		<< "ThPrj" << std::setw(3) << std::setfill('0') << _lineThresholdProjected << "_thBin" <<  _lineThresholdBinarized \
-		<< "_sprsNMaxSz"	<< _supressNonMaxSize;
+	ss <<"_maS" << setw(3) << setfill('0') << _maxSize \
+		<< "_rTh" << std::setw(2) << std::setfill('0')  << _responseThreshold  \
+		<< "_ThP"<< std::setw(2) << std::setfill('0')  << _lineThresholdProjected \
+		<< "_thB" << std::setw(2) << std::setfill('0')  <<  _lineThresholdBinarized \
+		<< "_spr"	  << _supressNonMaxSize;
 	string strSurfParam = ss.str();
 	ss.str("");
 	ss << _dstDrawKeypointsImg_DirFname << strSurfParam \
@@ -849,9 +859,14 @@ int64 evalDetectOrb(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints,
 		exit(EXIT_FAILURE);
 	}
 	/* --テキスト書き込み */
-	ofs <<"nfeat" << setw(3) << setfill('0') << _nfeatures << "_scaleFactor" << _scaleFactor \
-		<< "_nlevels" << std::setw(3) << std::setfill('0') << _nlevels << "_edgeThreshold" <<  _edgeThreshold \
-		<< "_firstLevel" << _firstLevel << "_WTA_K" << _WTA_K << "_scoreType" << _scoreType << "_patchSize" << _patchSize;
+	ofs <<"nfeatures-" << setw(3) << setfill('0') << _nfeatures \
+		<< "_scaleFactor-" << _scaleFactor \
+		<< "_nlevels-" << std::setw(2) << std::setfill('0') << _nlevels \
+		<< "_edgeThreshold-" <<  _edgeThreshold \
+		<< "_firstLevel-" << _firstLevel \
+		<< "_WTAK-" << _WTA_K \
+		<< "_scoreType-" << _scoreType \
+		<< "_patchSize-" << _patchSize;
 	ofs <<" " << _vecKeypoints.size() << "points " << diff_time << "msec" << endl;
 	ofs.close();
 					 //int _nfeatures = 500, 
@@ -869,9 +884,14 @@ int64 evalDetectOrb(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints,
 	/* --ファイル名生成 */
 	ss.str("");
 	/* --ファイルパラメータ生成 */ 
-	ss <<"nfeat" << setw(3) << setfill('0') << _nfeatures << "_scl" << _scaleFactor \
-		<< "_nlev" << std::setw(3) << std::setfill('0') << _nlevels << "_edgTh" <<  _edgeThreshold \
-		<< "_1stLev" << _firstLevel << "_WTA_K" << _WTA_K << "_scTyp" << _scoreType << "_patchSz" << _patchSize;
+	ss <<"_nft" << setw(3) << setfill('0') << _nfeatures \
+		<< "_scl" << setw(2) << setfill('0') << setprecision(1) << fixed << _scaleFactor \
+		<< "_nlv" << std::setw(2) << std::setfill('0') << _nlevels \
+		<< "_eTh" <<  _edgeThreshold \
+		<< "_1Lv" << _firstLevel \
+		<< "_WTK" << _WTA_K \
+		<< "_scT" << _scoreType \
+		<< "_pat" << _patchSize;
 	string strSurfParam = ss.str();
 	ss.str("");
 	ss << _dstDrawKeypointsImg_DirFname << strSurfParam \
@@ -904,7 +924,7 @@ int64 evalDetectFast(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 					 string &_dstDrawKeypointsImg_DirFname, string &_dstTimeLog_Path,
 					 string &_dstKeypointLst_DirFname,
 					 int _threshold,
-					 bool _nonmaxSupression)
+					 bool _nonmaxSuppression)
 {
 	/* 時間計測用変数 */
 	stringstream ss;
@@ -913,7 +933,7 @@ int64 evalDetectFast(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 	int64 en_time;
 	int64 diff_time;
 
-	FastFeatureDetector detector = FastFeatureDetector(_threshold , _nonmaxSupression);
+	FastFeatureDetector detector = FastFeatureDetector(_threshold , _nonmaxSuppression);
 
 	st_time = getTickCount();
 	detector.detect(_probe_gray_img, _vecKeypoints);
@@ -930,7 +950,8 @@ int64 evalDetectFast(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 	}
 	
 	/* --テキスト書き込み */
-	ofs <<"threshold" << setw(3) << setfill('0') << _threshold<< "_nonmaxSupression" << _nonmaxSupression ;
+	ofs <<"threshold-" << setw(3) << setfill('0') << _threshold \
+		<< "_nonmaxSuppression-" << _nonmaxSuppression ;
 	ofs <<" " << _vecKeypoints.size() << "points " << diff_time << "msec" << endl;
 	ofs.close();
 
@@ -940,7 +961,8 @@ int64 evalDetectFast(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 	/* --ファイル名生成 */
 	ss.str("");
 	/* --ファイルパラメータ生成 */ 
-	ss <<"threshold" << setw(3) << setfill('0') << _threshold<< "_nonmaxSupression" << _nonmaxSupression ;
+	ss <<"_thr" << setw(3) << setfill('0') << _threshold \
+		<< "_noS" << _nonmaxSuppression ;
 	string strSurfParam = ss.str();
 	ss.str("");
 	ss << _dstDrawKeypointsImg_DirFname << strSurfParam \
@@ -1005,13 +1027,17 @@ int64 evalDetectMser(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 		cerr << "file open failed :" << _dstTimeLog_Path << endl;
 		exit(EXIT_FAILURE);
 	}
-	
+
 	/* --テキスト書き込み */
-	ofs <<"_delta" << setw(3) << setfill('0') << _delta<< "_minArea" << _min_area \
-		<<"_maxArea" << setw(3) << setfill('0') << _max_area<< "_maxVariation" << _max_variation \
-		<<"_minDiversity" << setw(3) << setfill('0') << _min_diversity<< "_maxEvolution" << _max_evolution \
-	<<"_areaThreshold" << setw(3) << setfill('0') << _area_threshold << "_minMargin" << _min_margin \
-	<< "_edgeBlurSize" << _edge_blur_size;
+	ofs <<"delta-" << setw(1) << setfill('0') << _delta \
+		<< "_minArea-" << setw(3) << setfill('0') << _min_area \
+		<<"_maxArea-"  << setw(3) << setfill('0') << _max_area \
+		<< "_maxVariation-" <<setw(3) << setfill('0') << setprecision(2) << fixed << _max_variation \
+		<<"_minDiversity-" << setw(3) << setfill('0') << _min_diversity \
+		<< "_maxEvolution-" << setw(3) << setfill('0') << _max_evolution \
+		<<"_areaThreshold-" << setw(4) << setfill('0')<< fixed <<setprecision(2) << _area_threshold \
+		<< "_minMargin-" << setw(5) << setfill('0')<< fixed <<setprecision(4)<< _min_margin \
+		<< "_edgeBlurSize-"<< setw(2) << setfill('0') << _edge_blur_size;
 	ofs <<" " << _vecKeypoints.size() << "points " << diff_time << "msec" << endl;
 	ofs.close();
 
@@ -1021,11 +1047,15 @@ int64 evalDetectMser(const Mat& _probe_gray_img, vector<KeyPoint>& _vecKeypoints
 	/* --ファイル名生成 */
 	ss.str("");
 	/* --ファイルパラメータ生成 */ 
-	ss <<"_delta" << setw(3) << setfill('0') << _delta<< "_minAr" << _min_area \
-		<<"_maxArea" << setw(3) << setfill('0') << _max_area<< "_maxVar" << _max_variation \
-		<<"_minDiv" << setw(3) << setfill('0') << _min_diversity<< "_maxEvol" << _max_evolution \
-	<<"_areaTh" << setw(3) << setfill('0') << _area_threshold << "_minMar" << _min_margin \
-	<< "_edgBlur" << _edge_blur_size;
+	ss <<"_del" << setw(3)   << setfill('0') << _delta \
+		<< "_miA" << setw(3) << setfill('0') << _min_area \
+		<<"_maA"  << setw(3) << setfill('0') << _max_area \
+		<< "_maV" << setw(3) << setfill('0') << setprecision(2) << fixed << _max_variation \
+		<<"_miD" << setw(3)  << setfill('0') << _min_diversity \
+		<< "_maE"  << setw(3) << setfill('0') << _max_evolution \
+	<<"_aTh" << setw(4)      << setfill('0')<< fixed <<setprecision(2) << _area_threshold \
+	<< "_miM"  << setw(5)    << setfill('0')<< fixed <<setprecision(4) << _min_margin \
+	<< "_edg"<< setw(2)      << setfill('0') << _edge_blur_size;
 	string strSurfParam = ss.str();
 	ss.str("");
 	ss << _dstDrawKeypointsImg_DirFname << strSurfParam \
