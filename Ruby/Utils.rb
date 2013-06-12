@@ -1,4 +1,4 @@
-
+#!/usr/bin/ruby
 #フォルダがあるかどうかチェックしてなければ作成
 class String
 	def chkMkdir
@@ -61,8 +61,10 @@ class String
 	
 	def getArray
 		array=[]
-		str=File.open(self).read
-		str.each{|row|
+		f = open(self)
+		# str=File.open(self).read
+
+		f.each{|row|
 			array.push(row.chomp)
 		}
 		return array
