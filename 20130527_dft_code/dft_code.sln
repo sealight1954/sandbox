@@ -3,6 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C++ Express 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dft_code", "dft_code\dft_code.vcxproj", "{27BC83A5-9FCC-4E72-A1BB-89453FEBCBD0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "overlapAdd", "overlapAdd\overlapAdd.vcxproj", "{29FB737F-7C37-46AF-A559-13C1D9907135}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "overLapAdd_malloc", "overLapAdd_malloc\overLapAdd_malloc.vcxproj", "{2853E31B-D9A2-4ACB-8217-FB8FF181DC40}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fft", "fft\fft.vcxproj", "{7343009B-7295-4DBC-8CA3-DA93C004046A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "overlapAdd_fft_malloc", "overlapAdd_fft_malloc\overlapAdd_fft_malloc.vcxproj", "{90E4EEF8-176F-47D5-85A4-4448F89499ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +21,22 @@ Global
 		{27BC83A5-9FCC-4E72-A1BB-89453FEBCBD0}.Debug|Win32.Build.0 = Debug|Win32
 		{27BC83A5-9FCC-4E72-A1BB-89453FEBCBD0}.Release|Win32.ActiveCfg = Release|Win32
 		{27BC83A5-9FCC-4E72-A1BB-89453FEBCBD0}.Release|Win32.Build.0 = Release|Win32
+		{29FB737F-7C37-46AF-A559-13C1D9907135}.Debug|Win32.ActiveCfg = Debug|Win32
+		{29FB737F-7C37-46AF-A559-13C1D9907135}.Debug|Win32.Build.0 = Debug|Win32
+		{29FB737F-7C37-46AF-A559-13C1D9907135}.Release|Win32.ActiveCfg = Release|Win32
+		{29FB737F-7C37-46AF-A559-13C1D9907135}.Release|Win32.Build.0 = Release|Win32
+		{2853E31B-D9A2-4ACB-8217-FB8FF181DC40}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2853E31B-D9A2-4ACB-8217-FB8FF181DC40}.Debug|Win32.Build.0 = Debug|Win32
+		{2853E31B-D9A2-4ACB-8217-FB8FF181DC40}.Release|Win32.ActiveCfg = Release|Win32
+		{2853E31B-D9A2-4ACB-8217-FB8FF181DC40}.Release|Win32.Build.0 = Release|Win32
+		{7343009B-7295-4DBC-8CA3-DA93C004046A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7343009B-7295-4DBC-8CA3-DA93C004046A}.Debug|Win32.Build.0 = Debug|Win32
+		{7343009B-7295-4DBC-8CA3-DA93C004046A}.Release|Win32.ActiveCfg = Release|Win32
+		{7343009B-7295-4DBC-8CA3-DA93C004046A}.Release|Win32.Build.0 = Release|Win32
+		{90E4EEF8-176F-47D5-85A4-4448F89499ED}.Debug|Win32.ActiveCfg = Debug|Win32
+		{90E4EEF8-176F-47D5-85A4-4448F89499ED}.Debug|Win32.Build.0 = Debug|Win32
+		{90E4EEF8-176F-47D5-85A4-4448F89499ED}.Release|Win32.ActiveCfg = Release|Win32
+		{90E4EEF8-176F-47D5-85A4-4448F89499ED}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

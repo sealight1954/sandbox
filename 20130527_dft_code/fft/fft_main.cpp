@@ -119,6 +119,7 @@ int main(const int argc, const char *argv[])
 	double fr_filter_i[]={0,0,0,0};
 	Fft fft(argc,argv);
 	fft::FftArray arr(4);
+	// []‚Íƒƒ\ƒbƒhÀ‘•‚³‚ê‚Ä‚¢‚é
 	arr[0]=1;
 	arr[1]=2;
 	arr[2]=3;

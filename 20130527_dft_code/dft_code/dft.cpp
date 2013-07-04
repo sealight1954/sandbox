@@ -10,12 +10,13 @@
 // 1:{1,2,3,4}
 #define INPUT_DATA 1
 
-int fr_multi(double *dest_r, const double *src_r, const double *filter_r,
+int fr_multi(double *dest_r, double *dest_i, const double *src_r,const double *src_i, const double *filter_r, const double *filter_i,
 	int sampleSize)
 {
 	for(int i=0 ; i < sampleSize ; i++)
 	{
-		dest_r[i] = src_r[i] * filter_r[i];
+		dest_r[i] = src_r[i] * filter_r[i] + (src_i[i]*filter_i[i])*-1;
+		dest_i[i] = src_r[i] * filter_i[i] + (src_i[i]*filter_r[i]);
 	}	
 	return SUCCESS;
 }
@@ -97,7 +98,7 @@ int saveArrayAsText1(void *array_src, int arraysize,
 	if((fp=fopen(filename, "w")) == NULL)
 	{ return FAILURE; }
 
-	for(i=0; i<arraysize; i++)
+	for(i=0; i < arraysize; i++)
 	{
 		fprintf(fp, "%f\n", ((double*)array_src)[i]);
 	}
@@ -162,7 +163,7 @@ int main()
 	status = dft(dest_r, dest_i, im_r, im_i,
 		datasize, false);
 #elif INPUT_DATA == 1
-	status = dft(fr_src_r, fr_src_i, fr_multi_src_r, fr_multi_src_i,
+	status = dft(fr_src_r, fr_src_i, ti_src_r, ti_src_i,
 		datasize, false);
 	dft( fr_filter_r, fr_filter_i, filter_r, filter_i,
 		datasize, false);
@@ -171,16 +172,19 @@ int main()
 	{ return FAILURE;}
 #if INPUT_DATA == 1
 	// ô‚Ýž‚ÝiŽü”g”—Ìˆæ‚ÅÏj
-	fr_multi(fr_multi_src_r, fr_src_r,fr_filter_r, datasize);
-	fr_multi(fr_multi_src_i, fr_src_i,fr_filter_i, datasize);
-
+	fr_multi(fr_multi_src_r, fr_multi_src_i, fr_src_r , fr_src_i , fr_filter_r, fr_filter_i, datasize);
+	//fr_multi(fr_multi_src_i,  fr_src_i,fr_filter_i, datasize);
+//for(int i =0 ; i < datasize; i++)
+//{
+//	fr_multi_src_i[i] = fr_src_i[i];
+//	fr_multi_src_r[i]  = fr_src_r[i];
+//}
 #endif
+
+	// Œ‹‰Ê‚ÌŠi”[
 #if INPUT_DATA == 0
 	status = saveArrayAsText1(dest_r, datasize, 
 		"dft_r.txt");
-#elif INPUT_DATA == 1
-	status = saveArrayAsText1(fr_multi_src_r, datasize, 
-		"fr_multi_src_r.txt");
 	if(status == FAILURE)
 	{ fprintf(stderr,"saving file failed.\n");
 	return FAILURE;}
@@ -190,25 +194,40 @@ int main()
 	if(status == FAILURE)
 	{ fprintf(stderr,"saving file failed.\n");
 	return FAILURE;}
+#elif INPUT_DATA == 1
+	status = saveArrayAsText1(fr_multi_src_r, datasize, 
+
+		"fr_multi_src_r.txt");
+#endif
+	
 
 	//inverse dft
-	status = dft(im_r, im_i, dest_r, dest_i,
+#if INPUT_DATA == 0
+	status = dft(im_r,im_i,dest_r,dest_i,datasize,true);
+#elif INPUT_DATA == 1
+	status = dft(ti_multi_dst_r, ti_multi_dst_i, fr_multi_src_r, fr_multi_src_i,
 		datasize, true);
+#endif
 	if(status == FAILURE)
 	{ fprintf(stderr,"inverse dft failed.\n");
 	return FAILURE;}
-
+#if INPUT_DATA == 0 
 	status = saveArrayAsText1(im_r, datasize, 
 		"idft_r.txt");
+#elif INPUT_DATA == 1
+	status = saveArrayAsText1(ti_multi_dst_r, datasize, 
+		"idft_r.txt");
+
+#endif
 	if(status == FAILURE)
 	{ fprintf(stderr,"saving file failed.\n");
 	return FAILURE;}
-
+#if INPUT_DATA == 0
 	free(im_r);
 	free(im_i);
 	free(dest_r);
 	free(dest_i);
-
+#endif
 	printf("done!\n");
 
 	return SUCCESS;

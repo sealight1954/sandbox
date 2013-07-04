@@ -1,4 +1,3 @@
-
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <stdlib.h>
@@ -113,6 +112,8 @@ int saveArrayAsText1(void *array_src, int arraysize,
 
 int main()
 {
+
+
 	int status, datasize;
 	int i;
 	datasize = N;
