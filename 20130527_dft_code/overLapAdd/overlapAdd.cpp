@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
+
 #define FAILURE (-1)
 #define SUCCESS (0)
 // 0:sin cosÉJÅ[Éu
@@ -113,10 +114,11 @@ int saveArrayAsText1(void *array_src, int arraysize,
 int main()
 {
 
-
+	// input data
 	int status, datasize;
 	int i;
 	datasize = N;
+
 	double ti_src_All[] = {1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4};
 	double ti_dst_All[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 	//double ti_src_r[] = {0,0,0,0,0,0};
