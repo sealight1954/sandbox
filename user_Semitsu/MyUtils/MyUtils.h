@@ -318,33 +318,45 @@ Mat loadValMat(Mat img,vector<KeyPoint> keypointLst){
 	return dst.clone();
 }
 
+/*!
+ * @brief unsigned char以外の画像をimshowする．32Fでなくても可
+ * @param []
+ * @retval []
+*/
 void imshow32F(string winname, const Mat& img)
 {
-	double minVal, maxVal;
-	cv::Point minLoc, maxLoc;
-	cv::minMaxLoc(img, &minVal, &maxVal, &minLoc, &maxLoc);
-	Mat dst = Mat(img.rows, img.cols, CV_8UC1);
-Mat tmp;
-	unsigned char *dst_ptr=dst.ptr<unsigned char>(0);
-	const double *img_ptr=img.ptr<double>(0);
-	//for(int i = 0; i < img.rows; i++)
-	//{
-	//	for(int j = 0; j < img.cols; j++)
-	//	{
-	//		//if(i==89){
-	//			//std::cout << dst.step << "," << img.step << std::endl;
-	//			//std::cout << "i*dst.step + j" << i*dst.step + j << "," << std::endl;
-	//		//}
-	//		std::cout << "(i,j)=("<<i<<","<<j<<") ";
-	//		//std::cout << dst_ptr[i*dst.cols + j]<<" ";
-	//		std::cout << ((img_ptr[i*img.cols + j] - minVal)*255/(maxVal - minVal))<<std::endl;
-	//		dst_ptr[i*dst.cols + j] = (unsigned char)((img_ptr[i*img.cols + j] - minVal)*255/(maxVal - minVal));
-	//		//std::cout << img.at<unsigned short>(i,j) << " ";
-	//	}
-	//	//std::cout << std::endl;
-	//}
+	/*旧式*/
+	//double minVal, maxVal;
+	//cv::Point minLoc, maxLoc;
+	//cv::minMaxLoc(img, &minVal, &maxVal, &minLoc, &maxLoc);
+	Mat dst ;//= Mat(img.rows, img.cols, CV_8UC1);
+	//Mat tmp;
+	//unsigned char *dst_ptr=dst.ptr<unsigned char>(0);
+	//const float *img_ptr=img.ptr<float>(0);
 	// 線形変換：最小～最大の値をとる行列に変換される．
-	convertScaleAbs(img, tmp, 255.0/(maxVal - minVal), (255.0/(maxVal - minVal))*(-minVal));
-	tmp.convertTo(dst,CV_8UC1);
+	//convertScaleAbs(img, tmp, 255.0/(maxVal - minVal), (255.0/(maxVal - minVal))*(-minVal));
+	//tmp.convertTo(dst,CV_8UC1);
+	cv::normalize(img, dst, 0,255,cv::NORM_MINMAX);
+	dst.convertTo(dst,CV_8UC1);
 	imshow(winname, dst);
+
+}
+
+void imshowNon8U(string winname, const Mat& img)
+{
+	/*旧式*/
+	//double minVal, maxVal;
+	//cv::Point minLoc, maxLoc;
+	//cv::minMaxLoc(img, &minVal, &maxVal, &minLoc, &maxLoc);
+	Mat dst ;//= Mat(img.rows, img.cols, CV_8UC1);
+	//Mat tmp;
+	//unsigned char *dst_ptr=dst.ptr<unsigned char>(0);
+	//const float *img_ptr=img.ptr<float>(0);
+	// 線形変換：最小～最大の値をとる行列に変換される．
+	//convertScaleAbs(img, tmp, 255.0/(maxVal - minVal), (255.0/(maxVal - minVal))*(-minVal));
+	//tmp.convertTo(dst,CV_8UC1);
+	cv::normalize(img, dst, 0,255,cv::NORM_MINMAX);
+	dst.convertTo(dst,CV_8UC1);
+	imshow(winname, dst);
+
 }
